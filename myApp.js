@@ -1,51 +1,24 @@
 const express = require('express');
+const helmet = require('helmet');
+
 const app = express();
 
+const ninetyDaysInSeconds = 90*24*60*60
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.use(helmet());
+app.use(helmet({
+  frameguard: {         // configure
+    action: 'deny'
+  },
+  contentSecurityPolicy: {    // enable and configure
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ['trusted-cdn.com'],
+    }
+  },
+  dnsPrefetchControl: false     // disable
+}))
+app.use(helmet.noCache());
 
 module.exports = app;
 const api = require('./server.js');
